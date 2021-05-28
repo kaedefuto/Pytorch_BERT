@@ -66,7 +66,7 @@ def create_tensor(text, max_length, TEXT):
     #入力文章をTorch Teonsor型にのINDEXデータに変換
     token_ids = torch.ones((max_length)).to(torch.int64)
     ids_list = list(map(lambda x: TEXT.vocab.stoi[x] , text))
-    print(ids_list)
+    #print(ids_list)
     for i, index in enumerate(ids_list):
         token_ids[i] = index
     return token_ids

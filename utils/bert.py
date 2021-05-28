@@ -21,6 +21,14 @@ from torch import nn
 from pyknp import Juman
 from utils.tokenizer import BasicTokenizer, WordpieceTokenizer, JumanTokenize
 
+#形態素解析時にストップワードを使用する場合
+"""
+import codecs
+rulefile = "stop_word.txt"
+fr = codecs.open(rulefile, "r", "utf-8","ignore")
+rule = fr.readlines()
+fr.close()
+"""
 
 def get_config(file_path):
     # 設定をconfig.jsonから読み込み、JSONの辞書変数をオブジェクト変数に変換
@@ -412,6 +420,7 @@ class BertPooler(nn.Module):
         # 全結合層、'hidden_size': 768
         self.dense = nn.Linear(config.hidden_size, config.hidden_size)
         self.activation = nn.Tanh()
+        #self.activation = nn.Softmax(dim=1)
 
     def forward(self, hidden_states):
         # 1単語目の特徴量を取得
@@ -718,18 +727,29 @@ class BertTokenizer(object):
     def tokenize(self, text):
         '''文章を単語に分割する関数'''
         split_tokens = []  # 分割後の単語たち
-        #"""
+        
+        #形態素解析時にストップワードを使用する場合
+        """
         for token in self.basic_tokenizer.tokenize(text):
             #print(token)
             for sub_token in self.juman_tokenizer.tokenize(token):
-                if sub_token in self.vocab:
+                #print(sub_token)
+                
+                count=0
+                for r in rule:
+                    r = r.replace("\n", "").replace("\r", "")
+                    if r in sub_token:
+                        count=1
+                        break    
+                if sub_token in self.vocab and count==0:
                     split_tokens.append(sub_token)
                 else:
                     #split_tokens.append(sub_token)
                     split_tokens.append("[UNK]")
         print(split_tokens)
-        #"""
         """
+        #使用しない場合
+       　#"""
         for token in self.juman_tokenizer.tokenize(text):
             if token in self.vocab:
                 split_tokens.append(token)
@@ -737,7 +757,7 @@ class BertTokenizer(object):
                 #split_tokens.append(sub_token)
                 split_tokens.append("[UNK]")
         print(split_tokens)
-        """
+        #"""
         return split_tokens    
         
     def convert_tokens_to_ids(self, tokens):
