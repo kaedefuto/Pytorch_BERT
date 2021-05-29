@@ -1,7 +1,7 @@
 # pytorch_bert
 binary classification
 
-pytorchによるbertの実装(juman)
+# pytorchによるbertの実装(juman)
 
 - 環境:Ubuntu18.04
 - GPU:Quadro RTX 8000
