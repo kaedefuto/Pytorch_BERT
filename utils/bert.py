@@ -749,7 +749,7 @@ class BertTokenizer(object):
         print(split_tokens)
         """
         #使用しない場合
-       　#"""
+        #"""
         for token in self.juman_tokenizer.tokenize(text):
             if token in self.vocab:
                 split_tokens.append(token)
