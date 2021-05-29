@@ -11,6 +11,7 @@ binary classification
     - ./vocab:vocab.txt
     - ./data:train.tsv, test.tsv, train_dumy.tsv, test_dumy.tsv(ダミーデータが必要)
     - ./:test.csv
+- jumanをインストールしておくこと
 - 形態素解析時にストップワードを利用する場合はbert.pyの25行目と731行目のコメントアウトを外すこと
 - EarlyStoppingを利用する場合はhttps://github.com/Bjarten/early-stopping-pytorch からpytorchtools.pyをutilsにインストールし学習・検証のコメントアウトを外すこと
 - predicted_test.csvに結果が出力される
