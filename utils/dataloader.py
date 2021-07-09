@@ -85,12 +85,21 @@ def get_chABSA_DataLoaders_and_TEXT(max_length=256, batch_size=32):
     
     batch_size = 32  # BERTでは16、32あたりを使用する
     train_dl = torchtext.legacy.data.Iterator(train_val_ds, batch_size=batch_size, train=True)
+    
+    train_dl_val = torchtext.legacy.data.Iterator(train_ds, batch_size=batch_size, train=True)
     val_dl = torchtext.legacy.data.Iterator(val_ds, batch_size=batch_size, train=False, sort=False)
+    
     test_dl = torchtext.legacy.data.Iterator(test_ds, batch_size=batch_size, train=False, sort=False)
+    
     # 辞書オブジェクトにまとめる
-    dataloaders_dict = {"train": train_dl, "val": val_dl, "test": test_dl}
+    #dataloaders_dict = {"train": train_dl, "val": val_dl, "test": test_dl}
+    
+    dataloaders_dict_val = {"train": train_dl_val, "val": val_dl}
+    #dataloaders_dict = {"train": train_dl, "val": val_dl}
+    dataloaders_dict = {"train": train_dl}
 
-    return train_dl, val_dl, test_dl, TEXT, dataloaders_dict, test_ds
+    #return train_dl, val_dl, test_dl, TEXT, dataloaders_dict, dataloaders_dict, test_ds
+    return test_dl, TEXT, dataloaders_dict, dataloaders_dict_val, test_ds
 
 #テストデータのみ
 def get_chABSA_DataLoaders_and_TEXT_test(max_length=256, batch_size=32):
