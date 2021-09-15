@@ -25,7 +25,7 @@ from utils.bert import BertTokenizer, load_vocab
 from utils.config import PKL_FILE, VOCAB_FILE, DATA_PATH
 
 
-def get_chABSA_DataLoaders_and_TEXT(max_length=256, batch_size=32):
+def get_chABSA_DataLoaders_and_TEXT(max_length, batch_size):
     """IMDbのDataLoaderとTEXTオブジェクトを取得する。 """
     # 乱数のシードを設定
     torch.manual_seed(1234)
@@ -42,6 +42,8 @@ def get_chABSA_DataLoaders_and_TEXT(max_length=256, batch_size=32):
         text = re.sub('\n', '', text)
         text = re.sub('　', '', text)
         text = re.sub(' ', '', text)
+        #どっちでも
+        text = re.sub(',', '', text)
         
         # 数字文字の一律「0」化
         text = re.sub(r'[0-9 ０-９]+', '0', text)  # 数字
@@ -63,7 +65,7 @@ def get_chABSA_DataLoaders_and_TEXT(max_length=256, batch_size=32):
         return ret
     # データを読み込んだときに、読み込んだ内容に対して行う処理を定義します
     #max_length = 256
-    max_length=128
+    #max_length=128
     TEXT = torchtext.legacy.data.Field(sequential=True, tokenize=tokenizer_with_preprocessing, use_vocab=True, lower=False, include_lengths=True, batch_first=True, fix_length=max_length, init_token="[CLS]", eos_token="[SEP]", pad_token="[PAD]",unk_token='[UNK]')
     
     LABEL = torchtext.legacy.data.Field(sequential=False, use_vocab=False)
@@ -83,7 +85,7 @@ def get_chABSA_DataLoaders_and_TEXT(max_length=256, batch_size=32):
     TEXT.build_vocab(train_val_ds, min_freq=1)
     TEXT.vocab.stoi = vocab_bert    
     
-    batch_size = 32  # BERTでは16、32あたりを使用する
+    #batch_size = 32  # BERTでは16、32あたりを使用する
     train_dl = torchtext.legacy.data.Iterator(train_val_ds, batch_size=batch_size, train=True)
     
     train_dl_val = torchtext.legacy.data.Iterator(train_ds, batch_size=batch_size, train=True)
@@ -102,7 +104,7 @@ def get_chABSA_DataLoaders_and_TEXT(max_length=256, batch_size=32):
     return test_dl, TEXT, dataloaders_dict, dataloaders_dict_val, test_ds
 
 #テストデータのみ
-def get_chABSA_DataLoaders_and_TEXT_test(max_length=256, batch_size=32):
+def get_chABSA_DataLoaders_and_TEXT_test(max_length, batch_size):
     """IMDbのDataLoaderとTEXTオブジェクトを取得する。 """
     # 乱数のシードを設定
     torch.manual_seed(1234)
@@ -140,7 +142,7 @@ def get_chABSA_DataLoaders_and_TEXT_test(max_length=256, batch_size=32):
         return ret
     # データを読み込んだときに、読み込んだ内容に対して行う処理を定義します
     #max_length = 256
-    max_length=128
+    #max_length=128
     TEXT = torchtext.legacy.data.Field(sequential=True, tokenize=tokenizer_with_preprocessing, use_vocab=True, lower=False, include_lengths=True, batch_first=True, fix_length=max_length, init_token="[CLS]", eos_token="[SEP]", pad_token="[PAD]",unk_token='[UNK]')
     
     LABEL = torchtext.legacy.data.Field(sequential=False, use_vocab=False)
@@ -160,7 +162,7 @@ def get_chABSA_DataLoaders_and_TEXT_test(max_length=256, batch_size=32):
     TEXT.build_vocab(train_ds, min_freq=1)
     TEXT.vocab.stoi = vocab_bert    
     
-    batch_size = 32  # BERTでは16、32あたりを使用する
+    #batch_size = 32  # BERTでは16、32あたりを使用する
     #train_dl = torchtext.legacy.data.Iterator(train_val_ds, batch_size=batch_size, train=True)
     #val_dl = torchtext.legacy.data.Iterator(val_ds, batch_size=batch_size, train=False, sort=False)
     test_dl = torchtext.legacy.data.Iterator(test_ds, batch_size=batch_size, train=False, sort=False)
