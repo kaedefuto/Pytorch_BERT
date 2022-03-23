@@ -1,5 +1,4 @@
 # pytorch_bert
-binary classification
 
 # pytorchによるbertの実装(juman)
 
