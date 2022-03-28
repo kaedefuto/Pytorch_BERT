@@ -1,4 +1,3 @@
-# 第9章 自然言語処理による感情分析（BERT）
 # 実装参考に使用
 # https://github.com/huggingface/pytorch-pretrained-BERT/blob/master/pytorch_pretrained_bert/tokenization.py
 # huggingface/pytorch-pretrained-BERTをほぼそのまま使用しています

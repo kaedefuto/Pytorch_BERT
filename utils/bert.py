@@ -1,4 +1,3 @@
-# 第9章 自然言語処理による感情分析（BERT）
 # 実装参考に使用
 # https://github.com/huggingface/pytorch-pretrained-BERT
 
@@ -29,6 +28,7 @@ fr = codecs.open(rulefile, "r", "utf-8","ignore")
 rule = fr.readlines()
 fr.close()
 """
+
 
 def get_config(file_path):
     # 設定をconfig.jsonから読み込み、JSONの辞書変数をオブジェクト変数に変換
@@ -420,7 +420,7 @@ class BertPooler(nn.Module):
         # 全結合層、'hidden_size': 768
         self.dense = nn.Linear(config.hidden_size, config.hidden_size)
         self.activation = nn.Tanh()
-        #self.activation = nn.Softmax(dim=1)
+        #self.activation = nn.Softmax(dim=0)
 
     def forward(self, hidden_states):
         # 1単語目の特徴量を取得
@@ -756,7 +756,7 @@ class BertTokenizer(object):
             else:
                 #split_tokens.append(sub_token)
                 split_tokens.append("[UNK]")
-        print(split_tokens)
+        #print(split_tokens)
         #"""
         return split_tokens    
         

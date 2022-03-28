@@ -1,6 +1,6 @@
 # pytorch_bert
 
-# pytorchによるbertの実装(juman)
+# pytorchによるbertの実装（juman）
 
 - 環境:Ubuntu18.04
 - GPU:Quadro RTX 8000
@@ -20,3 +20,8 @@ https://kaedefuto.github.io/kaede_blog/posts/1/conda/
 
 参考書籍  
 https://book.mynavi.jp/ec/products/detail/id=104855
+
+### 最終更新2022/3/28
+
+- Attentionの可視化部分を変更
+- 出力結果を保存できるように変更

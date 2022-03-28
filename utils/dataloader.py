@@ -1,5 +1,3 @@
-#  自然言語処理による感情分析（BERT）
-
 import glob
 import os
 import io
@@ -25,8 +23,8 @@ from utils.bert import BertTokenizer, load_vocab
 from utils.config import PKL_FILE, VOCAB_FILE, DATA_PATH
 
 
-def get_chABSA_DataLoaders_and_TEXT(max_length, batch_size):
-    """IMDbのDataLoaderとTEXTオブジェクトを取得する。 """
+def DataLoaders_and_TEXT_train_val(max_length):
+    """DataLoaderとTEXTオブジェクトを取得する。 """
     # 乱数のシードを設定
     torch.manual_seed(1234)
     np.random.seed(1234)
@@ -64,7 +62,6 @@ def get_chABSA_DataLoaders_and_TEXT(max_length, batch_size):
         ret = tokenizer(text)  # tokenizer_bert
         return ret
     # データを読み込んだときに、読み込んだ内容に対して行う処理を定義します
-    #max_length = 256
     #max_length=128
     TEXT = torchtext.legacy.data.Field(sequential=True, tokenize=tokenizer_with_preprocessing, use_vocab=True, lower=False, include_lengths=True, batch_first=True, fix_length=max_length, init_token="[CLS]", eos_token="[SEP]", pad_token="[PAD]",unk_token='[UNK]')
     
@@ -76,6 +73,10 @@ def get_chABSA_DataLoaders_and_TEXT(max_length, batch_size):
         path=DATA_PATH, train='train.tsv',
         test='test.tsv', format='tsv',
         fields=[('Text', TEXT), ('Label', LABEL)])
+    return train_val_ds, test_ds, TEXT
+    
+def DataLoaders_and_TEXT_batch_train_val(train_val_ds, test_ds, TEXT, batch_size):
+    """DataLoaderとTEXTオブジェクトを取得する。 """
     
     # torchtext.data.Datasetのsplit関数で訓練データとvalidationデータを分ける
     train_ds, val_ds = train_val_ds.split(split_ratio=0.8, random_state=random.seed(1234))
@@ -104,8 +105,8 @@ def get_chABSA_DataLoaders_and_TEXT(max_length, batch_size):
     return test_dl, TEXT, dataloaders_dict, dataloaders_dict_val, test_ds
 
 #テストデータのみ
-def get_chABSA_DataLoaders_and_TEXT_test(max_length, batch_size):
-    """IMDbのDataLoaderとTEXTオブジェクトを取得する。 """
+def DataLoaders_and_TEXT_test(max_length, batch_size):
+    """DataLoaderとTEXTオブジェクトを取得する。 """
     # 乱数のシードを設定
     torch.manual_seed(1234)
     np.random.seed(1234)
@@ -170,8 +171,3 @@ def get_chABSA_DataLoaders_and_TEXT_test(max_length, batch_size):
     dataloaders_dict = {"test": test_dl}
 
     return test_dl, TEXT, dataloaders_dict, test_ds
-
-
-
-
-
