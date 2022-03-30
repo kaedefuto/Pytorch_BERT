@@ -722,13 +722,55 @@ class BertTokenizer(object):
         self.basic_tokenizer = BasicTokenizer(do_lower_case=do_lower_case,
                                               never_split=self.never_split)
         self.juman_tokenizer = JumanTokenize()
+        self.wordpiece_tokenizer = WordpieceTokenizer(vocab=self.vocab)
 
 
     def tokenize(self, text):
         '''文章を単語に分割する関数'''
         split_tokens = []  # 分割後の単語たち
         
-        #形態素解析時にストップワードを使用する場合
+        #パターン1：デフォルト
+        """
+        for token in self.basic_tokenizer.tokenize(text):
+            for sub_token in self.wordpiece_tokenizer.tokenize(token):
+                split_tokens.append(sub_token)
+        return split_tokens
+        """
+        
+        #パターン2：Jumanデフォルト（パターン4と比較してどっちがいいのかわからない）
+        #"""
+        for token in self.basic_tokenizer.tokenize(text):
+            print(token)
+            for sub_token in self.juman_tokenizer.tokenize(token):
+                if sub_token in self.vocab:
+                    split_tokens.append(sub_token)
+                else:
+                    split_tokens.append("[UNK]")
+        print(split_tokens)
+        #"""
+        
+        #パターン3：Juman+wordpiece
+        """
+        for token in self.juman_tokenizer.tokenize(text):
+            for sub_token in self.wordpiece_tokenizer.tokenize(token):
+                if token in self.vocab:
+                    split_tokens.append(token)
+                else:
+                    split_tokens.append("[UNK]")
+        """
+        
+        #パターン4：Jumanのみ（パターン2と多分同じ）
+        """
+        for token in self.juman_tokenizer.tokenize(text):
+            if token in self.vocab:
+                split_tokens.append(token)
+            else:
+                #split_tokens.append(sub_token)
+                split_tokens.append("[UNK]")
+        #print(split_tokens)
+        """
+        
+        #パターン5:パターン２にストップワードを使用する場合
         """
         for token in self.basic_tokenizer.tokenize(text):
             #print(token)
@@ -748,16 +790,6 @@ class BertTokenizer(object):
                     split_tokens.append("[UNK]")
         print(split_tokens)
         """
-        #使用しない場合
-        #"""
-        for token in self.juman_tokenizer.tokenize(text):
-            if token in self.vocab:
-                split_tokens.append(token)
-            else:
-                #split_tokens.append(sub_token)
-                split_tokens.append("[UNK]")
-        #print(split_tokens)
-        #"""
         return split_tokens    
         
     def convert_tokens_to_ids(self, tokens):
