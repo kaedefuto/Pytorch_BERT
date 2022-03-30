@@ -20,7 +20,8 @@ https://kaedefuto.github.io/kaede_blog/posts/1/conda/
 参考書籍  
 https://book.mynavi.jp/ec/products/detail/id=104855
 
-### 最終更新2022/3/28
+### 最終更新2022/3/30
 
 - Attentionの可視化部分を変更
 - 出力結果を保存できるように変更
+- bert.pyのBertTokenizerにtokenizeのパターンを追加（どのパターンが良いかわからないので適宜変更してください）

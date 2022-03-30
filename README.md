@@ -2,9 +2,8 @@
 
 # pytorchによるbertの実装
 
-[Juman](http://qiita.com "Juman")
-
-[Mecab](http://qiita.com "Mecab")
+## [Juman](https://github.com/kaedefuto/Pytorch_bert/tree/main/Pytorch_bert-Juman "Juman")
+## [Mecab](https://github.com/kaedefuto/Pytorch_bert/tree/main/Pytorch_bert-mecab "Mecab")
 
 - 環境:Ubuntu18.04
 - GPU:Quadro RTX 8000
